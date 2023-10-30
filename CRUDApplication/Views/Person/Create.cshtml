@@ -1,0 +1,105 @@
+﻿@{
+    ViewBag.Title = "Add person";
+}
+<a href="Person/Index"><button>Back to list</button></a>
+<br />
+<center>Add person</center>
+<div class="w-50">
+    <form asp-controller="Person" asp-action="Create" method="post">
+        <div class="form-field flex">
+            <div class="w-25">
+                <label for="personname" class="form-label pt">
+                    Name:
+                </label>
+                <div class="flex-1">
+                    <input type="text" name="Name" id="personname" class="form-input" />
+                </div>
+            </div>
+            </div><br />
+
+
+            <div class="form-field flex">
+            <div class="w-25">
+                <label for="Email" class="form-label pt">
+                    Email:
+                </label>
+                <div class="flex-1">
+                    <input type="text" name="Email" id="Email" class="form-input" />
+                </div>
+            </div></div><br />
+
+
+            <div class="form-field flex">
+            <div class="w-25">
+                <label for="password" class="form-label pt">
+                    Password:
+                </label>
+                <div class="flex-1">
+                    <input type="text" name="Password" id="password" class="form-input" />
+                </div>
+            </div></div><br />
+
+
+            <div class="form-field flex">
+            <div class="w-25">
+                <label for="Address" class="form-label pt">
+                    Address:
+                </label>
+                <div class="flex-1">
+                    <input type="text" name="Address" id="Address" class="form-input" />
+                </div>
+            </div></div> <br />
+
+
+            <div class="form-field flex">
+            <div class="w-25">
+                <label for="dob" class="form-label pt">
+                    Date of birth:
+                </label>
+                <div class="flex-1">
+                    <input type="date" name="DateOfBirth" id="dob" class="form-input" />
+                </div>
+            </div></div><br />
+
+            <div class="form-field flex">
+                <div class="w-25">
+                    <label class="form-label">
+                        Gender:
+                    </label>
+                    <div class="flex-1">
+                        <label for="Male">Male</label>
+                        <input type="radio" id="Male" name="Gender"  value="Male" />
+                        <label for="Female">Female</label>
+                        <input type="radio" id="Female" name="Gender" value="Female" />
+                        <label for="Other">Other</label>
+                        <input type="radio" id="Other" name="Other"  value="Other" />
+                    </div>
+                </div>
+            </div><br />
+
+
+        <div class="form-field flex">
+            <div class="w-25">
+                <label class="form-label" for="cid">
+                    Country:
+                </label>
+                <div class="flex-1">
+                    <select name="CountryId" id="cid" class="form-input">
+                        <option>Select country</option>
+                        @foreach(TheCountryResponse cr in ViewBag.Countries){
+                        <option value="@cr.Id" >@cr.Name</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="form-field flex">
+                <label for="checkb">Recieve Email:</label>
+                <input type="checkbox" name="RecieveNewsLetters" id="checkb" value="true"/>
+                </div>
+        </div><br />
+
+
+            <button type="submit">submit</button>
+        
+        </form>
+</div>

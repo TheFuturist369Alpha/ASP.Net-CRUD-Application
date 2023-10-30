@@ -1,0 +1,59 @@
+﻿[
+  {
+    "PersonId": "F60277BC-D984-43B6-9953-63285D04F5B1",
+    "Name": "Mario",
+    "Email": "Mario247@gmail.com",
+    "DateOfBirth": "2003-05-23",
+    "Gender": "Male",
+    "Address": "12 mario street",
+    "CounryId": "1E77F8B3-1C4D-4622-97A7-8C2B47EF2E26",
+    "RecieveNewsLetters": true
+  },
+
+  {
+    "PersonId": "0DB3E5F3-B610-4AF5-B314-0FA9763E68FD",
+    "Name": "James",
+    "Email": "James.catch@gmail.com",
+    "DateOfBirth": "1997-09-10",
+    "Gender": "Male",
+    "Address": "24 Ajebo street",
+    "CounryId": "83A2C0A1-2761-4244-BF87-5CE4393C3ADE",
+    "RecieveNewsLetters": false
+  },
+
+  {
+    "PersonId": "9C6958EF-B34A-41E6-8596-5122B27979A3",
+    "Name": "Davina",
+    "Email": "Davina.agile@gmail.com",
+    "DateOfBirth": "2013-02-20",
+    "Gender": "Female",
+    "Address": "15 Elon street",
+    "CounryId": "1DA2FA81-8F67-4492-91A0-6D511895FBCC",
+    "RecieveNewsLetters": false
+  },
+
+  {
+    "PersonId": "93F16A89-6EE0-482F-BA0A-8431F1A31DE6",
+    "Name": "Lucifer",
+    "Email": "lucifer.dot@gmail.com",
+    "DateOfBirth": "1999-12-25",
+    "Gender": "Male",
+    "Address": "16 mavin street",
+    "CounryId": "83CE1CEC-78C3-4703-975A-CB1B9A1CC176",
+    "RecieveNewsLetters": true
+  },
+
+  {
+    "PersonId": "2B5A85E3-DE43-48A8-8FDE-8B62B367C428",
+    "Name": "Jack",
+    "Email": "Jack34@gmail.com",
+    "DateOfBirth": "2002-11-28",
+    "Gender": "Male",
+    "Address": "17 cyber street",
+    "CounryId": "6AAB3D8A-31B4-4590-82F3-820812BDED5",
+    "RecieveNewsLetters": false
+  }
+
+
+
+]

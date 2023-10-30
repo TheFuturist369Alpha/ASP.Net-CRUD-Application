@@ -1,0 +1,145 @@
+﻿@model IEnumerable<PersonResponse>
+@{
+    ViewBag.Title = "People";
+}
+<a href="create"><button>Add a person</button></a>
+<center><h3>People</h3></center><br />
+<form asp-controller="Person" asp-action="Index" method="get">
+<div class="box flex">
+    <div class="flex-1">
+        <select class="form-input" name="searchby">
+            @foreach(var i in ViewBag.Dict)
+            {
+                    if (i.Key == ViewBag.CurrentBy)
+                    {
+                        <option value="@i.Key" selected="selected">
+                            @i.Value
+                        </option>
+                    }
+                    else
+                    {
+                        <option value="@i.Key">
+                            @i.Value
+                        </option>
+                    }
+
+            }
+        </select>
+    </div>
+    <div class="flex-1">
+        <input type="search" id="search" class="form-input" placeholder="search" name="searchchar" value="@ViewBag.Currentsearch"/>
+
+    </div>
+        <div class="flex-1">
+            <select name="sortorder">
+                @if (ViewBag.Currentsortorder == nameof(SortOrder.Asc))
+                {
+                    <option value="@nameof(SortOrder.Asc)" selected="selected">
+                        Ascending
+                    </option>
+                    <option value="@nameof(SortOrder.Desc)">
+                        Decending
+                    </option>
+                }
+                else
+                {
+                    <option value="@nameof(SortOrder.Asc)">
+                        Ascending
+                    </option>
+                    <option value="@nameof(SortOrder.Desc)" selected="selected">
+                        Decending
+                    </option>
+                }
+
+            </select>
+           
+        </div>
+        Sort By
+        <br />
+        @foreach(var i in ViewBag.Dict)
+        {
+            if (ViewBag.Currentsortby == i.Key)
+            {
+                <label>
+                    @i.Value
+                </label>
+                <input type="radio" value="@i.Key" name="sortby" checked="checked">
+                <br />
+            }
+            else
+            {
+
+                <label>
+                    @i.Value
+                </label>
+                <input type="radio" value="@i.Key" name="sortby">
+                <br />
+            }
+        }
+
+      
+    <div class="flex-1">
+        <button class="button button-blue-back">search</button>
+        <a asp-controller="Person" asp-action="Index" class="link-hover">clear</a>
+    </div>
+    
+   
+
+       
+</div>
+
+<table class="table w-100 mt">
+    <thead>
+        <tr>
+            <th>S/N</th>
+            <th>
+               Person Name
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                Date of birth
+            </th>
+            <th>
+                Gender
+            </th>
+            <th>
+                Address
+
+            </th>
+            <th>
+                Age
+            </th>
+            <th>
+                Recieve Messages
+            </th>
+            <th><bold>Options</bold></th>
+            
+        </tr>
+    </thead>
+    <tbody>
+            @{
+                int count = 1;
+            }
+        @foreach(var i in Model)
+        {
+            <tr>
+                <td>@count</td>
+            <td>@i.Name</td>
+            <td>@i.Email</td>
+            <td>@i.DateOfBirth?.ToString("dd-MM-yyyy")</td>
+            <td>@i.Gender</td>
+            <td>@i.Address</td>
+            <td>@i.Age</td>
+            <td>@i.ReceiveNewsLetters</td>
+             <td><a href="edit?par=@i.PersonId">Edit</a>
+                 <br>
+             <a href="delete">Delete</a></td>
+                </tr>
+                count += 1;
+            }
+
+    </tbody>
+</table>
+</form>

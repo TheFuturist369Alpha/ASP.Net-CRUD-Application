@@ -1,0 +1,125 @@
+﻿@model UpdatePerson
+
+@{
+    ViewBag.Title = "Edit";
+}
+<div class="w-50">
+    <form asp-action="Edit" asp-controller="Person" method="post">
+        @{
+            ViewBag.id = Model.Id;
+        }
+        <div class="form-field flex">
+            <div class="w-25">
+                <label asp-for="Name" class="form-label pt">
+                    Name:
+                </label>
+                <div class="flex-1">
+                    <input asp-for="Name" class="form-input"/>
+                </div>
+            </div>
+        </div><br />
+        @Model.Id.ToString()
+
+        <div class="form-field flex">
+            <div class="w-25">
+                <label asp-for="Email" class="form-label pt">
+                    Email:
+                </label>
+                <div class="flex-1">
+                    <input  asp-for="Email" class="form-input"  />
+                </div>
+            </div>
+        </div><br />
+
+
+        <div class="form-field flex">
+            <div class="w-25">
+                <label asp-for="Address" class="form-label pt">
+                    Address:
+                </label>
+                <div class="flex-1">
+                    <input asp-for="Address" class="form-input" />
+                </div>
+            </div>
+        </div> <br />
+        <input type="hidden" asp-for="Id" />
+        <br />
+
+
+        <div class="form-field flex">
+            <div class="w-25">
+                <label asp-for="DateOfBirth" class="form-label pt">
+                    Date of birth:
+                </label>
+                <div class="flex-1">
+                    <input  asp-for="DateOfBirth" class="form-input"/>
+                </div>
+            </div>
+        </div><br />
+
+        <div class="form-field flex">
+            <div class="w-25">
+                <label class="form-label">
+                    Gender:
+                </label>
+                <div class="flex-1">
+                    @{
+                        string? en = Model.Gender.ToString();
+                        switch (en)
+                        {
+                            case "Male":
+                                <label for="Male">Male</label>
+                                <input type="radio" asp-for="Gender" value="Male" checked="checked" />
+                                <label for="Female">Female</label>
+                                <input type="radio" asp-for="Gender" value="Female" />
+                                <label for="Other">Other</label>
+                                <input type="radio" asp-for="Gender" value="Other"  />
+                                break;
+                            case "Female":
+                                <label for="Male">Male</label>
+                                <input type="radio" asp-for="Gender" value="Male" />
+                                <label for="Female">Female</label>
+                                <input type="radio" asp-for="Gender" value="Female" checked="checked" />
+                                <label for="Other">Other</label>
+                                <input type="radio" asp-for="Gender" value="Other"  />
+                                break;
+                            case "Other":
+                                <label for="Male">Male</label>
+                                <input type="radio" asp-for="Gender" value="Male" />
+                                <label for="Female">Female</label>
+                                <input type="radio" asp-for="Gender" value="Female"  />
+                                <label for="Other">Other</label>
+                                <input asp-for="Gender" value="Other" checked="checked"/>
+                                break;
+                        }
+
+                    }
+                  
+                </div>
+            </div>
+            </div>
+
+            <br />
+
+            <div class="form-field flex">
+                <div class="w-25">
+                    <label asp-for="RecieveNewsLetters">
+                        Receive Email:
+                    </label>
+                    <div class="flex-1">
+                      
+                        <input asp-for="RecieveNewsLetters"/>
+                     
+                </div>
+                </div>
+            
+        </div><br />
+
+
+
+
+        <button type="submit">edit</button>
+
+    </form>
+</div>
+

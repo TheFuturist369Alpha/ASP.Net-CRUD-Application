@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CRUDApplication.Filters;
+using CRUDApplication.Filters.ActionFilters;
+using Microsoft.AspNetCore.Mvc;
 using ServiceContracts;
 using ServiceContracts.DTO;
 using ServiceContracts.Enums;
@@ -12,22 +14,46 @@ namespace CRUDApplication.Controllers
     public class PersonController : Controller
     {
         private readonly ILogger<PersonController> plogg;
-        private readonly IPersonService _personservice;
+        private readonly IPersonAddService _addpersonservice;
+        private readonly IPersonDeleteService _deletepersonservice;
+        private readonly IPersonGetAllService _getallpersonservice;
+        private readonly IPersonGetByIdService _getbyidpersonservice;
+        private readonly IPersonSearchService _searchpersonservice;
+        private readonly IPersonSortedService _sortpersonservice;
+        private readonly IPersonUpdateService _updatepersonservice;
         private readonly ICountryService _countryservice;
         private readonly ValidationHelper _vh;
-        public PersonController(IPersonService personservice, ICountryService cs, ILogger<PersonController> pl)
+
+        public PersonController(IPersonAddService addpersonservice,
+            IPersonDeleteService deletepersonservice,
+            IPersonGetAllService getallpersonservice,
+            IPersonSearchService searchpersonservice,
+            IPersonSortedService sortpersonservice,
+            IPersonUpdateService updatepersonservice,
+            IPersonGetByIdService getbyidpersonservice,
+            ICountryService cs, ILogger<PersonController> pl, ValidationHelper valh)
         {
-            _personservice = personservice;
+
+            _addpersonservice = addpersonservice;
+            _deletepersonservice = deletepersonservice;
+            _getallpersonservice = getallpersonservice;
+            _searchpersonservice = searchpersonservice;
+            _sortpersonservice = sortpersonservice;
+            _updatepersonservice = updatepersonservice;
+            _getbyidpersonservice = getbyidpersonservice;
             _countryservice = cs;
             plogg = pl;
+            _vh = valh;
            
             
         }
 
         [Route("[action]")]
-        public async Task<IActionResult> Index(string? searchby, string? searchchar, SortOrder sortorder=SortOrder.Asc, string sortby = nameof(PersonResponse.Name))
+        [TypeFilter(typeof(IndexFilter))] 
+        public async Task<IActionResult> Index(string? searchby, string? searchchar, 
+            SortOrder sortorder=SortOrder.Asc, string sortby = nameof(PersonResponse.Name))
         {
-            plogg.LogInformation("Youve reached the Index method");
+            plogg.LogInformation("You've reached the Index method");
             plogg.LogDebug($"Search by:{searchby}\nSearch char:{searchchar}\nOrder:{sortorder}\n");
             ViewBag.Dict = new Dictionary<string, string>()
             {
@@ -40,15 +66,12 @@ namespace CRUDApplication.Controllers
                 
 
             };
-            ViewBag.Currentsearch = searchchar;
-            ViewBag.CurrentBy = searchby;
-            ViewBag.Currentsortorder = nameof(sortorder);
-            ViewBag.CurrentSortby = sortby;
+           
             
             
            
-            List<PersonResponse> pr =await _personservice.SearchPerson(searchby,searchchar);
-            List<PersonResponse?> sb = await _personservice.GetSortedPersons(pr, sortby,sortorder);
+            List<PersonResponse> pr =await _searchpersonservice.SearchPerson(searchby,searchchar);
+            List<PersonResponse?> sb = await _sortpersonservice.GetSortedPersons(pr, sortby,sortorder);
             return View(sb);
         }
 
@@ -67,7 +90,7 @@ namespace CRUDApplication.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(PersonAddRequest par)
         {
-            PersonResponse pr =  await _personservice.AddPerson(par);
+            PersonResponse pr =  await _addpersonservice.AddPerson(par);
 
             return RedirectToAction("Index","Person");
         }
@@ -76,7 +99,7 @@ namespace CRUDApplication.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(Guid par)
         {
-            PersonResponse pr = await _personservice.GetPersonByPersonId(par);
+            PersonResponse pr = await _getbyidpersonservice.GetPersonByPersonId(par);
             UpdatePerson up = pr.Update();
             return View(up);
         
@@ -87,7 +110,7 @@ namespace CRUDApplication.Controllers
         public async Task<IActionResult> Edit(UpdatePerson par)
         {
            
-            PersonResponse pr = await _personservice.PersonUpdate(par);
+            PersonResponse pr = await _updatepersonservice.PersonUpdate(par);
             return RedirectToAction("Index","Person");
         }
     }

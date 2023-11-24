@@ -22,7 +22,13 @@ builder.Services.AddDbContext<DBDemoDbContext>(opts =>
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<ICountryService, CountryService>();
-builder.Services.AddScoped<IPersonService, PersonService>();
+builder.Services.AddScoped<IPersonAddService, AddPersonService>();
+builder.Services.AddScoped<IPersonDeleteService, DeletePersonService>();
+builder.Services.AddScoped<IPersonGetAllService, GetAllPersonService>();
+builder.Services.AddScoped<IPersonGetByIdService, GetByIdPersonService>();
+builder.Services.AddScoped<IPersonSearchService, SearchPersonService>();
+builder.Services.AddScoped<IPersonSortedService, SortedPersonService>();
+builder.Services.AddScoped<IPersonUpdateService, UpdatedPersonService>();
 builder.Services.AddScoped<ValidationHelper, ValidationHelper>();
 var app = builder.Build();
 if (app.Environment.IsDevelopment()){

@@ -36,7 +36,8 @@ namespace ServiceContracts.DTO
                 return false;
             }
             PersonResponse tr = (PersonResponse)obj;
-            return (this.PersonId == tr.PersonId) && (this.Name == tr.Name) && (this.Address==tr.Address)&&(this.CountryId==tr.CountryId);
+            return (this.PersonId == tr.PersonId) && (this.Name == tr.Name) &&
+                (this.Address==tr.Address)&&(this.CountryId==tr.CountryId);
         }
 
         public UpdatePerson Update()

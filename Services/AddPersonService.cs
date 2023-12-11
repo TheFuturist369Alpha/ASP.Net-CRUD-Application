@@ -5,18 +5,19 @@ using Entities;
 using System.ComponentModel.DataAnnotations;
 using ServiceContracts.Enums;
 using Microsoft.EntityFrameworkCore;
+using RepositoryContracts;
 
 namespace Services
 {
     public class AddPersonService : IPersonAddService
     {
-        public DBDemoDbContext _db;
+        public IPersonRepo _personrepo;
         
         private ICountryService countryService;
 
-        public AddPersonService(DBDemoDbContext db,ICountryService cs)
+        public AddPersonService(IPersonRepo db,ICountryService cs)
         {
-            this._db = db;
+            this._personrepo = db;
             countryService =cs;
         }
 
@@ -30,7 +31,7 @@ namespace Services
             ValidationHelper.Validate(request);
 
 
-            if ( await _db.People.Where(person => person.Email == request.Email).CountAsync() > 0)
+            if (await _personrepo.GetPersonByEmail(request.Email). > 0)
             {
                 throw new ArgumentException("Email already exists");
             }
@@ -38,8 +39,8 @@ namespace Services
            
 
 
-                _db.People.Add(person);
-            _db.SaveChangesAsync();
+                await _personrepo.AddPerson(person);
+            
             PersonResponse peopleResponse = person.ToResponse();
            
             

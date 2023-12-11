@@ -10,6 +10,6 @@ namespace ServiceContracts
     public interface IPersonDeleteService
     {
         
-        public bool DeletePerson(Guid id);
+        public Task<bool> DeletePerson(Guid id);
     }
 }

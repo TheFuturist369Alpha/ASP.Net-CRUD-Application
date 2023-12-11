@@ -5,18 +5,19 @@ using Entities;
 using System.ComponentModel.DataAnnotations;
 using ServiceContracts.Enums;
 using Microsoft.EntityFrameworkCore;
+using RepositoryContracts;
 
 namespace Services
 {
     public class GetAllPersonService : IPersonGetAllService
     {
-        public DBDemoDbContext _db;
+        public IPersonRepo _personrepo;
         
         private ICountryService countryService;
 
-        public GetAllPersonService(DBDemoDbContext db,ICountryService cs)
+        public GetAllPersonService(IPersonRepo personrepo,ICountryService cs)
         {
-            this._db = db;
+            this._personrepo = personrepo;
             countryService =cs;
         }
 
@@ -26,7 +27,7 @@ namespace Services
         {
             List<PersonResponse> prl=new List<PersonResponse>();
            
-            foreach (var people in _db.dbCopyP())
+            foreach (var people in _personrepo.dbCopyP())
             {
                 PersonResponse pr = people.ToResponse();
                 prl.Add(pr);

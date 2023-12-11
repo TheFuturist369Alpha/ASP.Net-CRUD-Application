@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Microsoft.EntityFrameworkCore;
 using RepositoryContracts;
 using System.Linq.Expressions;
 
@@ -15,35 +16,50 @@ namespace Repositories
         }
 
 
-        public Task AddPerson(Person person)
+        public async Task AddPerson(Person person)
         {
-            _dbContext.Add(person);
-            _dbContext.SaveChanges();
+            _dbContext.People.Add(person);
+           await _dbContext.SaveChangesAsync();
         }
 
-        public Task DeletePerson(Guid id)
+        public async Task DeletePerson(Guid id)
         {
-            throw new NotImplementedException();
+            _dbContext.People.Remove(_dbContext.People.FirstOrDefault(temp => temp.PersonId == id));
+            await _dbContext.SaveChangesAsync();
         }
 
-        public Task<List<Person>> GetAllPersons()
+        public async Task<List<Person>> GetAllPersons()
         {
-            throw new NotImplementedException();
+            return await _dbContext.People.ToListAsync();
         }
 
-        public Task<List<Person>> GetFilteredPersons(Expression<Func<Person, bool>> predicate)
+        public async Task<List<Person>> GetFilteredPersons(Expression<Func<Person, bool>> predicate)
         {
-            throw new NotImplementedException();
+           return await _dbContext.People.Where(predicate).ToListAsync();
         }
 
-        public Task<Person> GetPersonById(Guid id)
+        public async Task<Person?> GetPersonById(Guid id)
         {
-            throw new NotImplementedException();
+           return await _dbContext.People.FirstOrDefaultAsync(temp => temp.PersonId == id);
         }
 
-        public Task<Person> UpdatePerson(Person person)
+        public async Task UpdatePerson(Person person)
         {
-            throw new NotImplementedException();
+           Person? p=await _dbContext.People.FirstOrDefaultAsync(temp=>temp.PersonId == person.PersonId);
+            if (p == null) return;
+            p.TIN = person.TIN;
+            p.Address = person.Address;
+            p.Gender = person.Gender;
+            p.RecieveNewsLetters = person.RecieveNewsLetters;
+            p.DateOfBirth = person.DateOfBirth;
+            p.Email = person.Email;
+            p.Name = person.Name;
+            p.Password = person.Password;
+            await _dbContext.SaveChangesAsync();
+        }
+        public async Task<List<Person>> GetPersonByEmail(string email)
+        {
+            return await _dbContext.People.Where(p => p.Email == email).ToListAsync();
         }
     }
 }

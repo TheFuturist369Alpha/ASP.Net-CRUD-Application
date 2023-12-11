@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using ServiceContracts.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using RepositoryContracts;
 
 namespace Services
 {
@@ -14,13 +15,15 @@ namespace Services
         public readonly DBDemoDbContext _db;
         
         private ICountryService countryService;
+        private readonly IPersonRepo _personRepo;
         private readonly ILogger<DeletePersonService> _logger;
 
-        public DeletePersonService(DBDemoDbContext db,ICountryService cs, ILogger<DeletePersonService> logger)
+        public DeletePersonService(DBDemoDbContext db,ICountryService cs, ILogger<DeletePersonService> logger,IPersonRepo personRepo)
         {
             _logger = logger;
-            this._db = db;
+            _db = db;
             countryService =cs;
+            _personRepo =personRepo;
         }
 
 

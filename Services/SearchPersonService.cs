@@ -4,19 +4,20 @@ using ServiceContracts.DTO;
 using Entities;
 using System.ComponentModel.DataAnnotations;
 using ServiceContracts.Enums;
+using RepositoryContracts
 using Microsoft.EntityFrameworkCore;
 
 namespace Services
 {
     public class SearchPersonService : IPersonSearchService
     {
-        public DBDemoDbContext _db;
+        private IPersonRepo _pr;
         
         private ICountryService countryService;
 
         public SearchPersonService(DBDemoDbContext db,ICountryService cs)
         {
-            this._db = db;
+            this._pr = db;
             countryService =cs;
         }
 
@@ -24,8 +25,7 @@ namespace Services
 
         public async Task<List<PersonResponse>> SearchPerson(string searchby, string? searchname)
         {
-            List<PersonResponse> pr = await new GetAllPersonService(_db,countryService).GetPeople();
-            List<PersonResponse> matching = pr;
+          
             if (string.IsNullOrEmpty(searchname))
                 return matching;
 

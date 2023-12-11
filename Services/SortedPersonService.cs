@@ -10,13 +10,13 @@ namespace Services
 {
     public class SortedPersonService : IPersonSortedService
     {
-        public DBDemoDbContext _db;
+        public DBDemoDbContext _personRepo;
         
         private ICountryService countryService;
 
         public SortedPersonService(DBDemoDbContext db,ICountryService cs)
         {
-            this._db = db;
+            this._personRepo = db;
             countryService =cs;
         }
 

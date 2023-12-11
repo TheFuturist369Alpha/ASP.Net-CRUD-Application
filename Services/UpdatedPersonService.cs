@@ -5,18 +5,19 @@ using Entities;
 using System.ComponentModel.DataAnnotations;
 using ServiceContracts.Enums;
 using Microsoft.EntityFrameworkCore;
+using RepositoryContracts;
 
 namespace Services
 {
     public class UpdatedPersonService : IPersonUpdateService
     {
-        public DBDemoDbContext _db;
+        private readonly IPersonRepo _pr;
         
         private ICountryService countryService;
 
-        public UpdatedPersonService(DBDemoDbContext db,ICountryService cs)
+        public UpdatedPersonService(IPersonRepo pr,ICountryService cs)
         {
-            this._db = db;
+            this._pr = pr;
             countryService =cs;
         }
 
@@ -32,7 +33,7 @@ namespace Services
 
             ValidationHelper.Validate(up);
 
-            foreach(Person person in  await _db.People.ToListAsync())
+            foreach(Person person in  await _pr.People.ToListAsync())
             {
                 if (person.PersonId == up.Id)
                 {
@@ -46,7 +47,7 @@ namespace Services
                     person.RecieveNewsLetters = up.RecieveNewsLetters;
                     person.CountryId= up.CountryId;
 
-                     await _db.SaveChangesAsync();
+                     await _pr.SaveChangesAsync();
 
                     return person.ToResponse();
 

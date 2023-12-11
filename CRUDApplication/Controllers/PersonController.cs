@@ -22,6 +22,7 @@ namespace CRUDApplication.Controllers
         private readonly IPersonSortedService _sortpersonservice;
         private readonly IPersonUpdateService _updatepersonservice;
         private readonly ICountryService _countryservice;
+        private readonly ILogger<PersonController> _logger;
         private readonly ValidationHelper _vh;
 
         public PersonController(IPersonAddService addpersonservice,
@@ -31,7 +32,7 @@ namespace CRUDApplication.Controllers
             IPersonSortedService sortpersonservice,
             IPersonUpdateService updatepersonservice,
             IPersonGetByIdService getbyidpersonservice,
-            ICountryService cs, ILogger<PersonController> pl, ValidationHelper valh)
+            ICountryService cs, ILogger<PersonController> pl, ValidationHelper valh, ILogger<PersonController> logger )
         {
 
             _addpersonservice = addpersonservice;
@@ -44,6 +45,7 @@ namespace CRUDApplication.Controllers
             _countryservice = cs;
             plogg = pl;
             _vh = valh;
+            _logger = logger;
            
             
         }
@@ -57,7 +59,7 @@ namespace CRUDApplication.Controllers
             plogg.LogDebug($"Search by:{searchby}\nSearch char:{searchchar}\nOrder:{sortorder}\n");
             ViewBag.Dict = new Dictionary<string, string>()
             {
-                {nameof(PersonResponse.Name),"Person name" },
+                {nameof(PersonResponse.Name),"Name" },
                 {nameof(PersonResponse.Email),"Email" },
                 {nameof(PersonResponse.DateOfBirth),"Date of birth" },
                 {nameof(PersonResponse.Gender),"Gender" },
@@ -112,6 +114,18 @@ namespace CRUDApplication.Controllers
            
             PersonResponse pr = await _updatepersonservice.PersonUpdate(par);
             return RedirectToAction("Index","Person");
+        }
+
+        [Route("/delete")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            string name = await _getbyidpersonservice.GetPersonByPersonId(id)?.Name;
+           if(_deletepersonservice.DeletePerson(id) == true)
+            {
+                _logger.LogDebug("")
+            }
+            
+            return RedirectToAction("Index", "Person");
         }
     }
 }

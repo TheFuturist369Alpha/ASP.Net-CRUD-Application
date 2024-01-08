@@ -27,7 +27,7 @@ namespace Services
         }
 
 
-        public bool DeletePerson(Guid id)
+        public async Task<bool> DeletePerson(Guid id)
         {
             _logger.LogInformation("DeletePerson method executing...");
             if (id == null)
@@ -35,14 +35,15 @@ namespace Services
                 throw new ArgumentNullException(nameof(id));    
             }
 
-            Person person =_db.People.FirstOrDefault(temp=>temp.PersonId==id);
-            _logger.LogDebug($"{person.Name} deleted.");
+            Person person = await _personRepo.GetPersonById(id);
+           
             if(person == null)
             {
                 return false;
             }
             _db.People.Remove(_db.People.FirstOrDefault(temp=>temp.PersonId==id));
             _db.SaveChanges();
+            _logger.LogDebug($"{person.Name} deleted.");
             return true;
 
         }

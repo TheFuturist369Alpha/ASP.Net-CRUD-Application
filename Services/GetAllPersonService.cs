@@ -25,15 +25,7 @@ namespace Services
 
         public async Task<List<PersonResponse>> GetPeople()
         {
-            List<PersonResponse> prl=new List<PersonResponse>();
-           
-            foreach (var people in _personrepo.dbCopyP())
-            {
-                PersonResponse pr = people.ToResponse();
-                prl.Add(pr);
-                
-            }
-            return prl; 
+            return  (await _personrepo.GetAllPersons()).Select(temp => temp.ToResponse()).ToList();
         }
 
        

@@ -119,10 +119,10 @@ namespace CRUDApplication.Controllers
         [Route("/delete")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            string name = await _getbyidpersonservice.GetPersonByPersonId(id)?.Name;
-           if(_deletepersonservice.DeletePerson(id) == true)
+            string? name = (await _getbyidpersonservice.GetPersonByPersonId(id)).Name;
+           if(await _deletepersonservice.DeletePerson(id) == true)
             {
-                _logger.LogDebug("")
+                _logger.LogDebug($"{name} successfully deleted");
             }
             
             return RedirectToAction("Index", "Person");

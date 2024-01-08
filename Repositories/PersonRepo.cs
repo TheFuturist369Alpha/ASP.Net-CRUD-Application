@@ -43,10 +43,10 @@ namespace Repositories
            return await _dbContext.People.FirstOrDefaultAsync(temp => temp.PersonId == id);
         }
 
-        public async Task UpdatePerson(Person person)
+        public async Task<Person> UpdatePerson(Person person)
         {
            Person? p=await _dbContext.People.FirstOrDefaultAsync(temp=>temp.PersonId == person.PersonId);
-            if (p == null) return;
+            if (p == null) return p;
             p.TIN = person.TIN;
             p.Address = person.Address;
             p.Gender = person.Gender;
@@ -56,10 +56,11 @@ namespace Repositories
             p.Name = person.Name;
             p.Password = person.Password;
             await _dbContext.SaveChangesAsync();
+            return p;
         }
-        public async Task<List<Person>> GetPersonByEmail(string email)
+        public async Task<Person?> GetPersonByEmail(string email)
         {
-            return await _dbContext.People.Where(p => p.Email == email).ToListAsync();
+            return await _dbContext.People.FirstOrDefaultAsync(p => p.Email == email);
         }
     }
 }

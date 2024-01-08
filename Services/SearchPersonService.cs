@@ -4,7 +4,7 @@ using ServiceContracts.DTO;
 using Entities;
 using System.ComponentModel.DataAnnotations;
 using ServiceContracts.Enums;
-using RepositoryContracts
+using RepositoryContracts;
 using Microsoft.EntityFrameworkCore;
 
 namespace Services
@@ -15,7 +15,7 @@ namespace Services
         
         private ICountryService countryService;
 
-        public SearchPersonService(DBDemoDbContext db,ICountryService cs)
+        public SearchPersonService(IPersonRepo db,ICountryService cs)
         {
             this._pr = db;
             countryService =cs;
@@ -25,38 +25,38 @@ namespace Services
 
         public async Task<List<PersonResponse>> SearchPerson(string searchby, string? searchname)
         {
-          
-            if (string.IsNullOrEmpty(searchname))
-                return matching;
-
-            switch (searchby)
+            List<PersonResponse> pr = (searchby) switch
             {
-                case nameof(PersonResponse.Name):
-                    matching = pr.Where(temp => (!string.IsNullOrEmpty(temp.Name)) ? temp.Name.Contains(searchname, StringComparison.OrdinalIgnoreCase) : true).ToList();
-                    return matching;    
-                    
-                case nameof(PersonResponse.Email):
-                    matching = pr.Where(temp => (!string.IsNullOrEmpty(temp.Email)) ? temp.Email.Contains(searchname, StringComparison.OrdinalIgnoreCase) : true).ToList();
-                    return matching;
-                    
-                case nameof(PersonResponse.Address):
-                    matching = pr.Where(temp => (string.IsNullOrEmpty(temp.Address)) ? temp.Address.Contains(searchname, StringComparison.OrdinalIgnoreCase) : true).ToList();
-                    return matching;
-                    
-                case nameof(PersonResponse.Age):
-                   
-                    matching = pr.Where(temp => (!(temp.Age==null)) ? Convert.ToString(temp.Age).Contains(searchname) : true).ToList();
-                    return matching;
-                    
-                case nameof(PersonResponse.DateOfBirth):
-                    matching = pr.Where(temp => (temp.DateOfBirth!=null) ? temp.DateOfBirth.Value.ToString("dd-mm-yyyy").Contains(searchname, StringComparison.OrdinalIgnoreCase) : true).ToList();
-                    return matching;
-                case nameof(PersonResponse.Gender):
-                    matching = pr.Where(temp => (!string.IsNullOrEmpty(temp.Gender)) ? temp.Gender.Contains(searchname) : true).ToList();
-                    return matching;
-                    
-                default:return matching;
-            }
+                nameof(PersonResponse.Name) =>
+                    (await _pr.GetFilteredPersons((temp => temp.Name.Contains(searchname))))
+                    .Select(temp => temp.ToResponse()).ToList(),
+
+
+                nameof(PersonResponse.Email) =>
+                     (await _pr.GetFilteredPersons((temp => temp.Email.Contains(searchname))))
+                    .Select(temp => temp.ToResponse()).ToList(),
+
+                nameof(PersonResponse.Address) =>
+                     (await _pr.GetFilteredPersons((temp => temp.Address.Contains(searchname))))
+                    .Select(temp => temp.ToResponse()).ToList(),
+
+                nameof(PersonResponse.Age) =>
+
+                     (await _pr.GetFilteredPersons((temp => Convert.ToString(temp.ToResponse().Age).Contains(searchname))))
+                    .Select(temp => temp.ToResponse()).ToList(),
+
+                nameof(PersonResponse.DateOfBirth) =>
+                    (await _pr.GetFilteredPersons((temp => temp.DateOfBirth.Value.ToString("dd MMMM yyyy").Contains(searchname))))
+                  .Select(temp => temp.ToResponse()).ToList(),
+
+                nameof(PersonResponse.Gender) =>
+                (await _pr.GetFilteredPersons((temp => temp.Name.Contains(searchname))))
+              .Select(temp => temp.ToResponse()).ToList(),
+
+              _=> ( await _pr.GetAllPersons()).Select(temp=>temp.ToResponse()).ToList()
+
+            };
+            return pr;
         }
     }
 }

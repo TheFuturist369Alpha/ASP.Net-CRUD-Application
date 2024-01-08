@@ -9,19 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Services
 {
     public class SortedPersonService : IPersonSortedService
-    {
-        public DBDemoDbContext _personRepo;
-        
-        private ICountryService countryService;
-
-        public SortedPersonService(DBDemoDbContext db,ICountryService cs)
-        {
-            this._personRepo = db;
-            countryService =cs;
-        }
-
-      
-
+    { 
         public async Task<List<PersonResponse>> GetSortedPersons(List<PersonResponse> all, string sortby, SortOrder x)
         {
            

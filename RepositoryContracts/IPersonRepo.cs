@@ -12,7 +12,7 @@ namespace RepositoryContracts
         public Task<Person?> GetPersonById(Guid id);
         
         public Task<List<Person>> GetFilteredPersons(Expression<Func<Person, bool>> predicate);
-        public Task<List<Person>> GetPersonByEmail(string email);
-        public Task UpdatePerson(Person person);
+        public Task<Person?> GetPersonByEmail(string email);
+        public Task<Person> UpdatePerson(Person person);
     }
 }

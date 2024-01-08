@@ -25,16 +25,9 @@ namespace Services
         public async Task<PersonResponse?> GetPersonByPersonId(Guid PId)
         {
             if (PId == Guid.Empty)
-                return null;
-            foreach(var person in await _personRepo.People.ToListAsync())
-            {
-                if (person.PersonId == PId)
-                {
-                   return person.ToResponse();
-                }
-                
-            }
             return null;
+
+            return (await _personRepo.GetPersonById(PId))?.ToResponse();
         }
 
     }

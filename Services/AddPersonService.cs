@@ -31,7 +31,7 @@ namespace Services
             ValidationHelper.Validate(request);
 
 
-            if (await _personrepo.GetPersonByEmail(request.Email). > 0)
+            if (await _personrepo.GetPersonByEmail(request.Email) != null)
             {
                 throw new ArgumentException("Email already exists");
             }

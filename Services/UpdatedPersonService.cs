@@ -33,27 +33,12 @@ namespace Services
 
             ValidationHelper.Validate(up);
 
-            foreach(Person person in  await _pr.People.ToListAsync())
-            {
-                if (person.PersonId == up.Id)
-                {
+            PersonResponse pr = (await _pr.UpdatePerson(up.ToPerson())).ToResponse();
 
-                    person.Name = up.Name;
-                    person.Address = up.Address;
-                    person.DateOfBirth = up.DateOfBirth;
-                    person.Email = up.Email;
-                    person.Password = up.Password;
-                    person.Gender = up.Gender.ToString();
-                    person.RecieveNewsLetters = up.RecieveNewsLetters;
-                    person.CountryId= up.CountryId;
-
-                     await _pr.SaveChangesAsync();
-
-                    return person.ToResponse();
-
-                }
-            }
+                if(pr == null)
             throw new ArgumentException("The Person You're trying to update doesn't exist");
+
+            return pr;
 
 
         }
